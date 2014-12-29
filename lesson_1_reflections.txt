@@ -1,11 +1,11 @@
 How did viewing a diff between two versions of a file help you see the bug that was introduced?
 The diff lists the lines that were different.
 Looking at these lines we can quickly see if the changes were exactly what we intended to do.
-Or were there any changes we introduced in the code by mistake.
+Or if we introduced changes in the code by mistake.
 
 How could having easy access to the entire history of a file make you a more efficient programmer in the long term?
 Easy access to entire history of a file helps us when we want to compare the current version to any of the older versions or compare between any two versions.
-As a programmer this will help make debugging easier. It also provides to refer back to any of the earlier designs or code.
+As a programmer this will help in easier debugging. It also allows to refer back to any of the earlier designs or code.
 
 What do you think are the pros and cons of manually choosing when to create a commit, like you do in Git, vs having versions automatically saved, like Google docs does?
 Pros of manually choosing when to commit:
@@ -19,9 +19,9 @@ The size and logical points are person defined
 For artifacts that are not code (documents, excel files etc) auto commits are better than manual commits
 
 Why do you think some version control systems, like Git, allow saving multiple files in one commit, while others, like Google Docs, treat each file separately?
-In software code artifacts we may have code definitions in one file and its usage in another. These sets of code files are linked together - they are developed, deployed together, may undergo changes together.
+In software code files we may have code definitions in one file and its usage in another. These sets of code files are linked together - they are developed, deployed together, may undergo changes together.
 Version control systems that allow to save code allow to save multiple files (that form a repository) in one commit.
-Version control systems that treat each file separately are used normally to save documents, pictures and other files that generally not dependent on each other in terms of content.
+Version control systems that treat each file separately are used normally to save documents, pictures and other files that generally are not dependent on each other in terms of content.
 
 How can you use the commands git log and git diff to view the history of files?
 git log gives a list of all the commits made to the repository with the Author, date and comment entered during commit. The most recent commits are listed first and then the older ones as you scroll down
@@ -30,8 +30,31 @@ The new lines added are shown starting with + the ones deleted are shown startin
 if diff config --global color.ui auto is set, it uses red color to show the lines deleted with - sign and green to show lines added with + sign
 
 How might using version control make you more confident to make changes that could break something?
-Version controls like Git allow to pull out all files (checkout) of any older version. So in case we have made changes that break something we can always pull the repository of files related to any of the older version that works.
+Version controls like Git allow to pull out all files (git checkout commit id) of any older version. So in case we have made changes that break something we can always pull the repository of files related to any of the older version that works.
 Also once we know which version works and which one broke, we can use diff to compare the files. The comparison will help debug more easily to identify the change that could have been a mistake.
 
 Now that you have your workspace set up, what do you want to try using Git for?
 I want to use Git to save my course exercises, my code work and experiments, my learning documents
+
+What are the different version control softwares available?
+CVS - concurrent version control
+SVN - subversion (similar to CVS)
+Mercurial (Hg) - similar to Git
+Git - Linus Troval
+
+Git Commands:
+git log - lists all the commits done
+commit code, author, date, comments
+
+git diff commit_code_old commit_code_new
+for each file that changed in the commit 
++ lines added in green, - lines removed in red, no change to lines in black
+
+git diff --stat commit_code_old commit_code_new
+commit code, author, date, file names with number of changes, ++++____ for number of changes done, number of files changed, number of lines changed
+
+git --version
+git help command
+git clone url of repository to clone to local machine
+git config --global color.ui auto applies the color changes to all projects, else commands like diff show changes in black and white
+git log | grep -B10 -A10 'word to match' to get 10 lines before and after the matching comments
