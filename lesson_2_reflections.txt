@@ -1,10 +1,18 @@
 What happens when you initialize a repository? Why do you need to do it?
-When we initialize a repository a hidden directory .git is created. This contains all the directory structure and files to store metadata of the repository and its history.
+When we initialize a repository a hidden directory .git is created. This contains all the directory structure and files to store metadata of the repository and its history. The repository at this point does not contain any files as nothing has been committed to it yet.
+Commands git init
+ls -a shows .git is created
+git log shows no commits at this point, it gives the message bad default revision 'HEAD'. 
+The first commit will be called HEAD by git. The current commit that the user works on is called the 'HEAD'.
+git status helps if to know if it is a repository. It shows the branch name, untracked or files not committed, files in staging area that are waiting to be committed.
 
 How is the staging area different from the working directory and the repository? What value do you think it offers?
+Working directory is the area in which the files the user is working on reside.
 Staging area is an intermediate area; between working directory and repository. 
-It acts as a container of files. The user can add files to this area one by one after working on them in the working directory. 
-Once user has worked on all related files for a logical change and added them to the staging area he/she can commit them to the git repository.
+The user can add files to this area one by one after working on them in the working directory. 
+It acts as a container of files for a logical change. Once user has worked on all related files for a logical change and added them to the staging area he/she can commit them to the git repository.
+git add moves the files from Working directory to Staging area
+git commit commits all files added in Staging area to the Repository
 
 How can you use the staging area to make sure you have one commit per logical change?
 Staging area acts as a container of files. The user can add files to this area one by one after working on them in the working directory (git add).
