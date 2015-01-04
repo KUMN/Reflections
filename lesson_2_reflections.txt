@@ -16,4 +16,250 @@ git commit commits all files added in Staging area to the Repository
 
 How can you use the staging area to make sure you have one commit per logical change?
 Staging area acts as a container of files. The user can add files to this area one by one after working on them in the working directory (git add).
-All files related to a logical change can be added to the staging area. After that using command 'git commit' will commit all the files from staging to the repository.
+All files related to a logical change can be added to the staging area. After that using command 'git commit' will commit all the files from staging to the repository in one go. One commit for all files related to the logical change.
+
+What are some situations when branches would be helpful in keeping your history organized? How would branches help?
+If we have one version of the code ready and usable and we want to experiment with new features before adding it to the main version then a branch will help. If we want to make the same code usable in different locales or currencies and have to modify code for it can be done in separate branches.
+Git allows a commit to be labelled with a branch name. By default Git creates branch called 'master' i.e. the latest commit we make in a repository is labelled 'master'. As we make more commits, the label is moved to the new commit and that commit remains checkedout i.e in case of master, the master branch remains checkout. We can label a commit that is checkedout with a branch name labels (one or many). i.e. checkout a commit that we want to label and create  branch label using git branch <branchname>. We can checkout a branch using git checkout branchname. Add and commit changes to this new branch. This way the changes we make for experiments or other locales are added to this new branch; i.e the new branch label moves to the latest commit while the other branch lables remain with the commit id they were associated to. The master branch continues to have the version of the code that was before. We can checkout and use the master branch in case we want to add bugfixes to this version or deploy this version to production.
+git branch lists all branches present in the repository
+git branch branchname creates a branch by the name
+git checkout branch name allows to checkout the code using branch name
+any git add and git commit are added to this branch and the branch remains checked out until we checkout another branch or commit
+By default branch label is master to the latest commit. Commits we add create a straight line history. We can create branched commit history by using branch labels checking out earlier commit ids and committing to it.
+
+How do the diagrams help you visualize the branch structure?
+Diagrams help visualize at which point we branched out and what commits are made to each branch
+git log --graph shows commits for this branch in a graph 
+git log --graph --oneline shows commits for this branch in a graph with commit message in a single line
+git log --graph --oneline branch1 branch2 shows commits for each branch in a graph with commit message in a single line
+
+git log --graph -oneline master easymode newname coins
+* 6797f53 Add function for downarrow. i.e. decelerrate or move down when down MASTER
+| * 27c9d77 Dummy Change to check if commit is deleted NEWNAME
+| * a9570dc ^MAdd comments to Readme for changes added to game.js EASYMODE
+| * b905190 Make game easier - break asteroid into 2 pieces 
+|/
+* 333e213 Add delay before each bullet when space key is pressed
+* 3884eab Add color
+* 3e42136 now using requestAnimationFrame
+* 4035769 frame interval was set wrong after game was paused
+* 25ede83 a couple missing ends with the ipad version
+* df03538 I can't spell 'screen' apparently :)
+| * 354dfdd Make ships able to spawn on coins COINS
+| * 0c6daf1 Make it possible to collect coins
+| * a3c0ae4 Create helper functions
+| * 656b02e First pass at adding coins
+|/
+* b0678b1 Revert controls
+* f19cb1b Fix typo in space
+* 75928a9 Use space for movement and enter for shooting
+* ac83b72 mostly finished ipad version
+* 7ca4826 trying to get div touch controls to work
+* 3cb406e first pass at ipad controls
+* fe7993e now capturing down key so people don't accidently scroll the page
+* 343935f added license
+
+We can delete a branch name with git branch -D branchname. This deletes the branch label even if we have not merged the branch with another one. In such a case the branch label is removed but the commit remains.
+If we have recorded this branch tips commit id we will still be able to trace its commit history via git log of commit id.
+
+A detached head warning is where git says that we have a commit checked out that does not have a branch label. HEAD refers to current commit. Unless we record the latest commit id for commits made to such a checkout, i.e. commit id of tip, or label that commit id with a branch label, we will lose the commits in that branch.
+git branch branchname and git checkout branchname can be combined to one command git checkout -b branchname
+
+git branch -D newname will result in
+commit history from 27c9d77xxx will be lost until we records it full id. These commits are accessible until git runs its garbage collection, which it does time to time. git gc to force its run.
+* 6797f53 Add function for downarrow. i.e. decelerrate or move down when down MASTER
+| * 27c9d77 Dummy Change to check if commit is deleted
+| * a9570dc ^MAdd comments to Readme for changes added to game.js EASYMODE
+| * b905190 Make game easier - break asteroid into 2 pieces 
+|/
+* 333e213 Add delay before each bullet when space key is pressed
+* 3884eab Add color
+* 3e42136 now using requestAnimationFrame
+* 4035769 frame interval was set wrong after game was paused
+* 25ede83 a couple missing ends with the ipad version
+* df03538 I can't spell 'screen' apparently :)
+| * 354dfdd Make ships able to spawn on coins COINS
+| * 0c6daf1 Make it possible to collect coins
+| * a3c0ae4 Create helper functions
+| * 656b02e First pass at adding coins
+|/
+* b0678b1 Revert controls
+* f19cb1b Fix typo in space
+* 75928a9 Use space for movement and enter for shooting
+* ac83b72 mostly finished ipad version
+* 7ca4826 trying to get div touch controls to work
+* 3cb406e first pass at ipad controls
+* fe7993e now capturing down key so people don't accidently scroll the page
+* 343935f added license
+
+git log 27c9d77xxx
+* 27c9d77 Dummy Change to check if commit is deleted
+* a9570dc ^MAdd comments to Readme for changes added to game.js EASYMODE
+* b905190 Make game easier - break asteroid into 2 pieces 
+* 333e213 Add delay before each bullet when space key is pressed
+* 3884eab Add color
+* 3e42136 now using requestAnimationFrame
+* 4035769 frame interval was set wrong after game was paused
+* 25ede83 a couple missing ends with the ipad version
+* df03538 I can't spell 'screen' apparently :)
+* b0678b1 Revert controls
+* f19cb1b Fix typo in space
+* 75928a9 Use space for movement and enter for shooting
+* ac83b72 mostly finished ipad version
+* 7ca4826 trying to get div touch controls to work
+* 3cb406e first pass at ipad controls
+* fe7993e now capturing down key so people don't accidently scroll the page
+* 343935f added license
+
+Each commit remembers or has a pointer to its parent. When a commit is made it records the commit id that was checked out when this commit is made. Commits dont record any data about branch names. Branches have data of which commit they are associated with. Every time a commit is made the branch label associates itself with the new commit.
+Thus reachability via commit id can happen to a commit node if it lies in the path as the commit traces back to its parent. 
+Nodes reachable via MASTER * 6797f53 -> * 333e213 -> * 3884eab -> and so on. 
+* a9570dc is not reachable via MASTER but via EASYMODE.
+* 27c9d77 is not reachable via any branch and can be lost until we record its commit id
+
+Merge notes:
+If original file has the line and one of the 2 branches does not have the line, git deletes the line.
+If original file does not have the line and one of the 2 branches has the line, git adds the line.
+If there are changes to the same line git reports a conflict.
+
+Merge branch 2 into branch 1; then checkout branch 1 and issue git merge branch 1 branch 2. This creates a new commit with branch label as branch 1, the branch that was checked out during merge. In case we issue git merge branch 2 branch 3 when branch 1 is checked out git merges the 3 branches and the new commit is labelled branch 1.
+This new commit has pointers to all its parent commits.
+Commit from which the 2 branches emerged is used as original file for making decisions to add or remove a line.
+Once merge is done we can delete the branch labels that was merged into this one. git branch -d branch 2. However all the commits will be retained as branch 1 will now point to it.
+In git log these commits from both branches will list out in the order of time.
+So it does not necessarily mean that the commit it listed below is the parent to it. So to compare changes that were made in this commit to its parent git show commit id will do this job.
+
+What is the result of merging two branches together? Why do we represent it in the diagram the way we do?
+Merging two branches creates a new commit with branch label as branch 1, the branch that was checked out during merge. In case we issue git merge branch 2 branch 3 when branch 1 is checked out git merges the 3 branches and the new commit is labelled branch 1.
+This new commit has pointers to all its parent commits.
+Commit from which the 2 branches emerged is used as original file for making decisions to add or remove a line.
+If original file has the line and one of the 2 branches does not have the line, git deletes the line.
+If original file does not have the line and one of the 2 branches has the line, git adds the line.
+If there are changes to the same line git reports a conflict.
+
+You represent in the diagram the way you do to show that
+a) merge creates a new commit.
+b) the branch name for the one that was checked out during merge moves to this new commit.
+c) the new commit has 2 parent commit each one being the tip of the branches before merge.
+d) After merge the merge commit id will allow to traverse through the commit histories of the earlier branches that were merged.
+e) The branch that was merged into master can be deleted which is to say only the label is deleted. The commit ids or commit history will continue to be present and can be referenced from the master branch. They will be listed in time order
+
+git log --graph --oneline of master
+* 89cc596 ^MMake coins yellow
+*   faa3ae9 Merge branch 'coins'
+|\
+| * 354dfdd Make ships able to spawn on coins
+| * 0c6daf1 Make it possible to collect coins
+| * a3c0ae4 Create helper functions
+| * 656b02e First pass at adding coins
+* | 74b09ef ^MRemove tab space after the delay before bullet line
+* | 23d90ce Use spaces in lines. Merge to coins shows conflict
+* | 6797f53 Add function for downarrow. i.e. decelerrate or move down when down
+* | 333e213 Add delay before each bullet when space key is pressed
+* | 3884eab Add color
+* | 3e42136 now using requestAnimationFrame
+* | 4035769 frame interval was set wrong after game was paused
+* | 25ede83 a couple missing ends with the ipad version
+* | df03538 I can't spell 'screen' apparently :)
+|/
+* b0678b1 Revert controls
+* f19cb1b Fix typo in space
+* 75928a9 Use space for movement and enter for shooting
+* ac83b72 mostly finished ipad version
+* 7ca4826 trying to get div touch controls to work
+* 3cb406e first pass at ipad controls
+* fe7993e now capturing down key so people don't accidently scroll the page
+
+git log --graph --oneline master easymode
+* 89cc596 ^MMake coins yellow
+*   faa3ae9 Merge branch 'coins'
+|\
+| * 354dfdd Make ships able to spawn on coins
+| * 0c6daf1 Make it possible to collect coins
+| * a3c0ae4 Create helper functions
+| * 656b02e First pass at adding coins
+* | 74b09ef ^MRemove tab space after the delay before bullet line
+* | 23d90ce Use spaces in lines. Merge to coins shows conflict
+* | 6797f53 Add function for downarrow. i.e. decelerrate or move down when down
+| | * a9570dc ^MAdd comments to Readme for changes added to game.js
+| | * b905190 Make game easier - break asteroid into 2 pieces
+| |/
+|/|
+* | 333e213 Add delay before each bullet when space key is pressed
+* | 3884eab Add color
+* | 3e42136 now using requestAnimationFrame
+* | 4035769 frame interval was set wrong after game was paused
+* | 25ede83 a couple missing ends with the ipad version
+* | df03538 I can't spell 'screen' apparently :)
+|/
+* b0678b1 Revert controls
+* f19cb1b Fix typo in space
+* 75928a9 Use space for movement and enter for shooting
+
+
+
+If you merge master into the easy-mode branch, what will the history look like afterward?
+
+* Merge branch 'master'
+|\
+| * 89cc596 ^MMake coins yellow
+* a9570dc ^MAdd comments to Readme for changes added to game.js
+* b905190 Make game easier - break asteroid into 2 pieces
+| *   faa3ae9 Merge branch 'coins'
+| |\
+| | * 354dfdd Make ships able to spawn on coins
+| | * 0c6daf1 Make it possible to collect coins
+| | * a3c0ae4 Create helper functions
+| | * 656b02e First pass at adding coins
+| * | 74b09ef ^MRemove tab space after the delay before bullet line
+| * | 23d90ce Use spaces in lines. Merge to coins shows conflict
+| * | 6797f53 Add function for downarrow. i.e. decelerrate or move down when down
+\ | |
+ \| |
+  * | 333e213 Add delay before each bullet when space key is pressed
+  * | 3884eab Add color
+  * | 3e42136 now using requestAnimationFrame
+  * | 4035769 frame interval was set wrong after game was paused
+  * | 25ede83 a couple missing ends with the ipad version
+  * | df03538 I can't spell 'screen' apparently :)
+  |/
+  * b0678b1 Revert controls
+  * f19cb1b Fix typo in space
+  * 75928a9 Use space for movement and enter for shooting
+  
+  git checkout easymode
+  git merge master easymode
+  git log --graph --oneline master easymode
+  *   0ddf0e6 Merge branch 'master' into easymode
+|\
+| * 89cc596 ^MMake coins yellow
+| *   faa3ae9 Merge branch 'coins'
+| |\
+| | * 354dfdd Make ships able to spawn on coins
+| | * 0c6daf1 Make it possible to collect coins
+| | * a3c0ae4 Create helper functions
+| | * 656b02e First pass at adding coins
+| * | 74b09ef ^MRemove tab space after the delay before bullet line
+| * | 23d90ce Use spaces in lines. Merge to coins shows conflict
+| * | 6797f53 Add function for downarrow. i.e. decelerrate or move down when dow
+* | | a9570dc ^MAdd comments to Readme for changes added to game.js
+* | | b905190 Make game easier - break asteroid into 2 pieces
+|/ /
+* | 333e213 Add delay before each bullet when space key is pressed
+* | 3884eab Add color
+* | 3e42136 now using requestAnimationFrame
+* | 4035769 frame interval was set wrong after game was paused
+* | 25ede83 a couple missing ends with the ipad version
+* | df03538 I can't spell 'screen' apparently :)
+|/
+* b0678b1 Revert controls
+* f19cb1b Fix typo in space
+
+What are the pros and cons of Git’s automatic merging vs. always doing merges manually?
+The pros of Git's automatic merging vs. always doing manual merges:
+a) When changes are made to different parts of the file and they are unrelated to each other, then automatic merge works correctly. Manual merge will be lot of effort in this case.
+b) When code is added or deleted in one branch and no changes are made to another branch or add/delete is done to code in different part, then automatic merge works correctly. Doing manual merge in this case will be a lot of effort.
+
+cons of automatic merge vs manual merge
+a) when changes are made to same part of the file then automatic merge will pose conflicts. Manual merge is preferred. Clearing the conflict once automerge is run is involved task. We need to understand changes made the in the branches we are merging before making changes to resolve the conflict manually.
+b) when changes are made to different lines in the file but refer to the same functionality then automatic merge will add the code and will not raise any conflicts. In this case manual merge would have been better to detect changes that are logically related
